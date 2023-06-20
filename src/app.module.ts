@@ -10,7 +10,7 @@ import { Chat } from './chat.entity';
       type: 'postgres',
       host: 'localhost',
       username: 'postgres',
-      password: '1234',
+      password: 'asdf',
       database: 'task',
       entities: [Chat],
       synchronize: true,

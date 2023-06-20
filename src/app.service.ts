@@ -15,4 +15,16 @@ export class AppService {
   async getMessages(): Promise<Chat[]> {
     return await this.chatRepository.find();
   }
+
+  async clearChat(): Promise<any> {
+    await this.chatRepository.clear()
+    return {status: 200, message: "Successful"};
+  }
+
+  async deleteIndividual(email: string) {
+    // will delete all the entries by a single user
+    return await this.chatRepository.delete({
+      email: email
+    });
+  }
 }

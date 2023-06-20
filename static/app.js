@@ -2,10 +2,13 @@ const socket = io('http://localhost:3002');
 const msgBox = document.getElementById('exampleFormControlTextarea1');
 const msgCont = document.getElementById('data-container');
 const email = document.getElementById('email');
+const clearButton = document.getElementById('clearButton');
+const clearIndiv = document.getElementById('clearIndividual');
 
 //get old messages from the server
-const messages = [];
-function getMessages() {
+let messages = [];
+let emails = [];
+const getMessages = async() => {
   fetch('http://localhost:3002/api/chat')
     .then((response) => response.json())
     .then((data) => {
@@ -18,6 +21,18 @@ function getMessages() {
 }
 getMessages();
 
+const clearChat = async() => {
+    fetch('http://localhost:3002/api/chat/delete')
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+}
+
+const clearIndividual = async(email) => {
+    fetch(`http://localhost:3002/api/chat/deleteSingle?email=${email}`)
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+}
+
 //When a user press the enter key,send message.
 msgBox.addEventListener('keydown', (e) => {
   if (e.keyCode === 13) {
@@ -25,6 +40,18 @@ msgBox.addEventListener('keydown', (e) => {
     e.target.value = '';
   }
 });
+
+clearButton.addEventListener('click', (e) => {
+    clearChat().then(r => console.log('successful'));
+    window.location.reload();
+})
+
+clearIndiv.addEventListener('click', (e) => {
+    clearIndividual(email.value).then(r => console.log('successful'));
+    console.log(email.value);
+    window.location.reload();
+})
+
 
 //Display messages to the users
 function loadDate(data) {
@@ -43,6 +70,7 @@ function loadDate(data) {
 function sendMessage(message) {
   socket.emit('sendMessage', message);
 }
+
 //Listen to recMessage event to get the messages sent by users
 socket.on('recMessage', (message) => {
   messages.push(message);
