@@ -13,7 +13,10 @@ export class Chat {
   @Column()
   email: string;
 
-  @Column({ unique: true })
+  @Column()
+  name: string;
+
+  @Column()
   text: string;
 
   @CreateDateColumn()

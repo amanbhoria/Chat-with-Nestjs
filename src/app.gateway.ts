@@ -25,6 +25,7 @@ export class AppGateway
   async handleSendMessage(client: Socket, payload: Chat): Promise<void> {
     await this.appService.createMessage(payload);
     this.server.emit('recMessage', payload);
+    console.log(payload);
   }
 
   afterInit(server: Server) {
